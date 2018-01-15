@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Optimize>true</Optimize>
+    <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Platform>x64 or x86</Platform>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="IJsonMergePatcher.cs" />
-    <Compile Remove="JsonMergePatcher.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- keep references unless they are to package files. See the section about the NuGet upgrade below. -->
+    <Reference Include="System.Configuration" />
   </ItemGroup>
 </Project>

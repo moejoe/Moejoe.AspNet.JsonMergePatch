@@ -14,27 +14,36 @@ namespace Moejoe.ProofOfConcept.JsonMergePatch.Core
         private readonly JsonSerializer _serializer;
         private readonly JToken _patch;
 
-        public JsonMergePatchDocument(string jsonPatchDocument)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jsonPatchDocument"></param>
+        /// <param name="settings"></param>
+        public JsonMergePatchDocument(string jsonPatchDocument, JsonSerializerSettings settings = null)
         {
             if (typeof(TResource).GetInterface(nameof(IEnumerable)) != null)
             {
                 throw new NotSupportedException($"Collections are not supported by JsonMergePatchDocument resource, since the rfc specifications states, that collections are to be replaced.");
             }
-            _serializer = JsonSerializer.Create();
+            settings = settings ?? new JsonSerializerSettings();
+            settings.NullValueHandling = NullValueHandling.Include;
+            _serializer = JsonSerializer.Create(settings);
             _patch = JToken.Parse(jsonPatchDocument);
         }
 
-        public void ApplyPatch(TResource original)
+        /// <summary>
+        /// Applies the patch data to a resource.
+        /// </summary>
+        /// <param name="resource"></param>
+        public void ApplyPatch(TResource resource)
         {
-            var nullValueHandling = _serializer.NullValueHandling;
-            var orig = JToken.FromObject(original, _serializer);
+            var orig = JToken.FromObject(resource, _serializer);
 
             if (orig.Type != JTokenType.Object) return;
             var jOrig = (JObject)orig;
             jOrig.Merge(_patch, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace, MergeNullValueHandling = MergeNullValueHandling.Merge });
-            _serializer.NullValueHandling = NullValueHandling.Include;
-            _serializer.Populate(jOrig.CreateReader(), original);
-            _serializer.NullValueHandling = nullValueHandling;
+            
+            _serializer.Populate(jOrig.CreateReader(), resource);
         }
     }
 }
