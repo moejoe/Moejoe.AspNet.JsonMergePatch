@@ -1,49 +1,56 @@
-﻿using System;
-using System.Collections;
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Moejoe.ProofOfConcept.JsonMergePatch.Core
 {
     /// <summary>
-    /// Representation of an RFC 7386 PatchDocument for the given Resource Type.
+    ///     Patch Document
     /// </summary>
-    /// <typeparam name="TResource">The Type of the Resource.</typeparam>
-    public class JsonMergePatchDocument<TResource> where TResource : class
+    /// <remarks>
+    ///     This implementation uses Newtonsoft.Json and its Linq Api to generate the document and apply it's content.
+    /// </remarks>
+    /// <typeparam name="TResource">Resource Type</typeparam>
+    public class JsonMergePatchDocument<TResource> : IJsonMergePatchDocument<TResource> where TResource : class
     {
-        private readonly JsonSerializer _serializer;
-        private readonly JToken _patch;
+        private readonly PatchDocument _internalDocument;
 
         /// <summary>
-        /// 
+        /// Constructor for given json content and optional JsonSerializer Settings.
         /// </summary>
-        /// <param name="jsonPatchDocument"></param>
-        /// <param name="settings"></param>
-        public JsonMergePatchDocument(string jsonPatchDocument, JsonSerializerSettings settings = null)
+        /// <param name="patchDocument">json MergePatchDocument content.</param>
+        /// <param name="settings">Serializer settings to use. NullValueHandling will always be NullValueHandling.Include though.</param>
+        /// <exception cref="ArgumentException">if <paramref name="patchDocument" /> is null or whitespace.</exception>
+        /// <exception cref="InvalidJsonMergePatchDocumentException">
+        ///     if <paramref name="patchDocument" /> anything other than a
+        ///     parsable json object.
+        /// </exception>
+        public JsonMergePatchDocument(string patchDocument, JsonSerializerSettings settings = null)
         {
-            if (typeof(TResource).GetInterface(nameof(IEnumerable)) != null)
-            {
-                throw new NotSupportedException($"Collections are not supported by JsonMergePatchDocument resource, since the rfc specifications states, that collections are to be replaced.");
-            }
+            if (string.IsNullOrWhiteSpace(patchDocument))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(patchDocument));
+
             settings = settings ?? new JsonSerializerSettings();
-            settings.NullValueHandling = NullValueHandling.Include;
-            _serializer = JsonSerializer.Create(settings);
-            _patch = JToken.Parse(jsonPatchDocument);
+            var serializer = JsonSerializer.Create(settings);
+            // Ensure that the serializer does not ignore null values to comply with RFC 7386
+            serializer.NullValueHandling = NullValueHandling.Include;
+            if (patchDocument.Trim().StartsWith("["))
+                throw new InvalidJsonMergePatchDocumentException(ErrorMessages.ArrayNotSupportedAsRootDocument);
+            try
+            {
+                var patchObject = JObject.Parse(patchDocument);
+                _internalDocument = new PatchDocument(patchObject, typeof(TResource),
+                    serializer);
+            }
+            catch (JsonReaderException ex)
+            {
+                throw new InvalidJsonMergePatchDocumentException(ErrorMessages.DocumentNotParseable, ex);
+            }
         }
 
-        /// <summary>
-        /// Applies the patch data to a resource.
-        /// </summary>
-        /// <param name="resource"></param>
-        public void ApplyPatch(TResource resource)
+        public void ApplyPatch(TResource target)
         {
-            var orig = JToken.FromObject(resource, _serializer);
-
-            if (orig.Type != JTokenType.Object) return;
-            var jOrig = (JObject)orig;
-            jOrig.Merge(_patch, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace, MergeNullValueHandling = MergeNullValueHandling.Merge });
-            
-            _serializer.Populate(jOrig.CreateReader(), resource);
+            _internalDocument.ApplyPatch(target);
         }
     }
 }

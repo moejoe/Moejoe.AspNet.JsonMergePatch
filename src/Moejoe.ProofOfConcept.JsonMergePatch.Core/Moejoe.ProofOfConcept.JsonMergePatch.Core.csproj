@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Platform>x64 or x86</Platform>
@@ -12,6 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <!-- keep references unless they are to package files. See the section about the NuGet upgrade below. -->
+    <Reference Include="Microsoft.CSharp">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Microsoft.CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System.Configuration" />
   </ItemGroup>
 </Project>
