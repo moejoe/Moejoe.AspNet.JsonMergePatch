@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core.Tests
+namespace Moejoe.ProofOfConcept.JsonMergePatch.Core.Tests.RfcComplianceTests
 {
     public class UnsupportedJsonMergePatchTestCase<TTargetClass> where TTargetClass : class
     {
