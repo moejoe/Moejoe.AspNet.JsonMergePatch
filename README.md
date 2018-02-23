@@ -20,7 +20,7 @@ I compared the speed by applying the same set of changes with the native
 public IHttpActionResult PatchResource(string resourceId, [FromBody] JsonMergePatchDocument<Resource> patchDocument) {
   var resource = _resourceRepository.Get(resourceId);
   if(resource == null) return NotFound();
-  patchDocument.Apply(resource);
+  patchDocument.ApplyPatch(resource);
   resourceRepository.Update(resource);
   return Request.CreateResponse(HttpStatusCode.NoContent, "No Content");
 }
