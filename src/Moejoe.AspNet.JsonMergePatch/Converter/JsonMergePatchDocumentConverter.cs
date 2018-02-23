@@ -1,16 +1,21 @@
 ﻿using System;
-using System.Reflection;
+using Moejoe.AspNet.JsonMergePatch.Exceptions;
+using Moejoe.AspNet.JsonMergePatch.Internal;
 using Newtonsoft.Json;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core.Converter
+namespace Moejoe.AspNet.JsonMergePatch.Converter
 {
+    /// <summary>
+    /// Json Converter for JsonMergePatchDocument.
+    /// </summary>
     public class JsonMergePatchDocumentConverter : JsonConverter
     {
+        /// <inheritdoc cref="JsonConverter"/>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
-
+        /// <inheritdoc cref="JsonConverter"/>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (!objectType.IsGenericType || objectType.GetGenericTypeDefinition() != typeof(JsonMergePatchDocument<>))
@@ -32,7 +37,8 @@ namespace Moejoe.ProofOfConcept.JsonMergePatch.Core.Converter
                 throw new InvalidJsonMergePatchDocumentException(ErrorMessages.DocumentNotParseable, ex);
             }
         }
-
+        
+        /// <inheritdoc cref="JsonConverter"/>
         public override bool CanConvert(Type objectType)
         {
             return true;

@@ -1,4 +1,4 @@
-﻿namespace Moejoe.ProofOfConcept.JsonMergePatch.Core
+﻿namespace Moejoe.AspNet.JsonMergePatch
 {
     /// <summary>
     /// Representation of an RFC 7386 PatchDocument for the given Resource Type.
@@ -10,7 +10,6 @@
         /// Applies the PatchDocuments changes to an instance of the targeted resource type.
         /// </summary>
         /// <param name="resource">An instance of the targeted resource.</param>
-        /// <typeparam name="TResource">The Type of the targeted resouce.</typeparam>
         void ApplyPatch(TResource resource);
     }
 }

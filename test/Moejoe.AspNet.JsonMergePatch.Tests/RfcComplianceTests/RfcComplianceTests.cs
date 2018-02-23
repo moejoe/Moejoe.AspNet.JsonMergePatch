@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core.Tests.RfcComplianceTests
+namespace Moejoe.AspNet.JsonMergePatch.Tests.RfcComplianceTests
 {
     [TestFixture]
     public class RfcComplianceTests

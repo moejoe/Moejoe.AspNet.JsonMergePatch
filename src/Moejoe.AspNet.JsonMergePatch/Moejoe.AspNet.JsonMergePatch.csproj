@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Optimize>false</Optimize>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Platform>x64 or x86</Platform>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Moritz Haslhofer</Authors>
+    <Company />
+    <Copyright>Copyright Moritz Haslhofer 2018</Copyright>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/moejoe/Moejoe.AspNet.JsonMergePatch/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/moejoe/Moejoe.AspNet.JsonMergePatch</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/moejoe/Moejoe.AspNet.JsonMergePatch</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Description>A  Json Merge Patch (RFC 7396 ) Implementation for Asp.NET.</Description>
+    <PackageTags>RFC 7396 Json Merge Patch Asp.NET mvc5 Core</PackageTags>
+    <MinClientVersion>2.12</MinClientVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
+    <Reference Include="System.Collections.Concurrent" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
+  </ItemGroup>
+</Project>

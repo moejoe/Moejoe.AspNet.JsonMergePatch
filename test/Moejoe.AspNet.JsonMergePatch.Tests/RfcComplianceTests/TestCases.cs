@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core.Tests.RfcComplianceTests
+namespace Moejoe.AspNet.JsonMergePatch.Tests.RfcComplianceTests
 {
     public static class TestCases
     {

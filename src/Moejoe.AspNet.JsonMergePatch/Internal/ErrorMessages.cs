@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core
+﻿namespace Moejoe.AspNet.JsonMergePatch.Internal
 {
-    public static class ErrorMessages
+    internal static class ErrorMessages
     {
         public const string ArrayNotSupportedAsRootDocument =
                 @"Arrays are not supported as root document. The way RFC 7386 is defined, using a simple CollectionBinder instead of JsonMergePatchDocument accomplishes the same thing."

@@ -3,7 +3,7 @@ using System.Collections;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core
+namespace Moejoe.AspNet.JsonMergePatch
 {
     /// <summary>
     /// Representation of an RFC 7386 PatchDocument for the given Resource Type.

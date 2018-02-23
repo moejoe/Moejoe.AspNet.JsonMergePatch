@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core.Tests
+namespace Moejoe.AspNet.JsonMergePatch.Tests
 {
     public static class TestCases
     {

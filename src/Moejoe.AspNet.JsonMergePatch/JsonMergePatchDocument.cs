@@ -1,9 +1,11 @@
 using System;
-using Moejoe.ProofOfConcept.JsonMergePatch.Core.Converter;
+using Moejoe.AspNet.JsonMergePatch.Converter;
+using Moejoe.AspNet.JsonMergePatch.Exceptions;
+using Moejoe.AspNet.JsonMergePatch.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core
+namespace Moejoe.AspNet.JsonMergePatch
 {
     /// <summary>
     ///     Patch Document
@@ -49,6 +51,15 @@ namespace Moejoe.ProofOfConcept.JsonMergePatch.Core
                 throw new InvalidJsonMergePatchDocumentException(ErrorMessages.DocumentNotParseable, ex);
             }
         }
+        /// <summary>
+        /// Constructor for given json content and optional JsonSerializer Settings.
+        /// </summary>
+        /// <param name="reader">JsonReader.</param>
+        /// <param name="serializer">Serializer. NullValueHandling will always be NullValueHandling.Include though.</param>
+        /// <exception cref="InvalidJsonMergePatchDocumentException">
+        ///     if <paramref name="reader" /> points to anything other than a
+        ///     parsable json object.
+        /// </exception>
         public JsonMergePatchDocument(JsonReader reader, JsonSerializer serializer)
         {
             var originalNullValueHandling = serializer.NullValueHandling;
@@ -74,9 +85,14 @@ namespace Moejoe.ProofOfConcept.JsonMergePatch.Core
                 serializer.NullValueHandling = originalNullValueHandling;
             }
         }
-
+        /// <summary>
+        /// Applies this patch documents content to the target resource.
+        /// </summary>
+        /// <param name="target">The Resource instance the patch will be applied to.</param>
+        /// <exception cref="ArgumentNullException">if the resource instance is null.</exception>
         public void ApplyPatch(TResource target)
         {
+            if (target == null) throw new ArgumentNullException(nameof(target));
             _internalDocument.ApplyPatch(target);
         }
     }

@@ -8,6 +8,6 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Moejoe.ProofOfConcept.JsonMergePatch.Core\Moejoe.ProofOfConcept.JsonMergePatch.Core.csproj" />
+    <ProjectReference Include="..\..\src\Moejoe.AspNet.JsonMergePatch\Moejoe.AspNet.JsonMergePatch.csproj" />
   </ItemGroup>
 </Project>

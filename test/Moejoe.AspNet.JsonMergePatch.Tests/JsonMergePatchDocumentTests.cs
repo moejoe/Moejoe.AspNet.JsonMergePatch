@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core.Tests
+namespace Moejoe.AspNet.JsonMergePatch.Tests
 {
     [TestFixture]
     internal class JsonMergePatchDocumentTests

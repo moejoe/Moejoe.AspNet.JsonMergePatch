@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core.Tests
+namespace Moejoe.AspNet.JsonMergePatch.Tests
 {
     public class ComplexTypeClass : IEquatable<ComplexTypeClass>
     {

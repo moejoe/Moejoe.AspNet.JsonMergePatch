@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core.Tests
+namespace Moejoe.AspNet.JsonMergePatch.Tests
 {
     public class SubClass : IEquatable<SubClass>
     {

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace Moejoe.ProofOfConcept.JsonMergePatch.Core
+namespace Moejoe.AspNet.JsonMergePatch.Internal
 {
     internal class PatchDocument
     {
