@@ -17,16 +17,19 @@
     <Description>A  Json Merge Patch (RFC 7396 ) Implementation for Asp.NET.</Description>
     <PackageTags>RFC 7396 Json Merge Patch Asp.NET mvc5 Core</PackageTags>
     <MinClientVersion>2.12</MinClientVersion>
+    <Version>0.2.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="NJsonSchema" Version="9.10.27" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
     <Reference Include="System.Collections.Concurrent" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup> 
     <None Include="..\..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
   </ItemGroup>
 </Project>
