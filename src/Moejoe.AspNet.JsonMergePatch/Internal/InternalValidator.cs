@@ -46,8 +46,6 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
         {
             var task = Task.Run(async () => await JsonSchema4.FromTypeAsync<TResource>(new JsonSchemaGeneratorSettings
             {
-                //TODO: infer from serializer settings.
-                DefaultEnumHandling = EnumHandling.String,
                 DefaultReferenceTypeNullHandling = ReferenceTypeNullHandling.Null,
             }));
             var schema = task.Result;

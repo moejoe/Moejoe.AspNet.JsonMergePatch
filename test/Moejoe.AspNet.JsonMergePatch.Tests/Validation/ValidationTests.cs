@@ -14,7 +14,7 @@ namespace Moejoe.AspNet.JsonMergePatch.Tests.Validation
         private static readonly JsonSerializer Serializer =
             JsonSerializer.Create(new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy() } });
 
-        private static JObject EmptyPatchDocument => JObject.FromObject(new {},
+        private static JObject EmptyPatchDocument => JObject.FromObject(new { },
             Serializer);
 
 
@@ -35,6 +35,16 @@ namespace Moejoe.AspNet.JsonMergePatch.Tests.Validation
                 StringValue = "ThisIsLongerThanItShouldBe"
             }
         }, Serializer);
+
+        private static JObject ValidStringEnumPatchDocument => JObject.FromObject(new
+        {
+            Enumeration = "first"
+        });
+
+        private static JObject InValidStringEnumPatchDocument => JObject.FromObject(new
+        {
+            Enumeration = "test"
+        });
 
         [Test]
         public void Empty_PatchDocument_IsValid()
@@ -64,6 +74,26 @@ namespace Moejoe.AspNet.JsonMergePatch.Tests.Validation
             var validationErrors = patchDocument.Validate(validationContext).ToList();
             Console.Write(JsonConvert.SerializeObject(validationErrors));
             Assert.AreEqual(2, validationErrors.Count);
+        }
+
+        [Test]
+        public void Validate_Accepts_StringEnum_Values()
+        {
+            var patchDocument = new JsonMergePatchDocument<ValidationClass>(ValidStringEnumPatchDocument.ToString());
+            var validationContext = new ValidationContext(patchDocument);
+            var validationErrors = patchDocument.Validate(validationContext).ToList();
+            Console.Write(JsonConvert.SerializeObject(validationErrors));
+            Assert.IsTrue(validationErrors.All(p => p == null), "No Error Result");
+        }
+
+        [Test]
+        public void Validate_Reports_IllegealStringEnum_Values()
+        {
+            var patchDocument = new JsonMergePatchDocument<ValidationClass>(InValidStringEnumPatchDocument.ToString());
+            var validationContext = new ValidationContext(patchDocument);
+            var validationErrors = patchDocument.Validate(validationContext).ToList();
+            Console.Write(JsonConvert.SerializeObject(validationErrors));
+            Assert.AreEqual(validationErrors.Count(p => p != null), 1, "One Error");
         }
     }
 }
