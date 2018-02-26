@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Moejoe.AspNet.JsonMergePatch.Converter;
 using Moejoe.AspNet.JsonMergePatch.Exceptions;
 using Moejoe.AspNet.JsonMergePatch.Internal;
@@ -15,9 +17,11 @@ namespace Moejoe.AspNet.JsonMergePatch
     /// </remarks>
     /// <typeparam name="TResource">Resource Type</typeparam>
     [JsonConverter(typeof(JsonMergePatchDocumentConverter))]
-    public class JsonMergePatchDocument<TResource> : IJsonMergePatchDocument<TResource> where TResource : class
+    public class JsonMergePatchDocument<TResource> : IJsonMergePatchDocument<TResource>, IValidatableObject where TResource : class
     {
         private readonly PatchDocument _internalDocument;
+
+        private readonly InternalValidator<TResource> _internalValidator = new InternalValidator<TResource>();
 
         /// <summary>
         /// Constructor for given json content and optional JsonSerializer Settings.
@@ -94,6 +98,12 @@ namespace Moejoe.AspNet.JsonMergePatch
         {
             if (target == null) throw new ArgumentNullException(nameof(target));
             _internalDocument.ApplyPatch(target);
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            return _internalValidator.Validate(validationContext, _internalDocument.Patch);
         }
     }
 }

@@ -7,14 +7,15 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
 {
     internal class PatchDocument
     {
-        private readonly JObject _patchDocument;
+        private readonly JObject _patchPatch;
+        
         private readonly PatchedProperties _patchedProperties = new PatchedProperties();
         private readonly JsonSerializer _serializer;
         private readonly Type _targetType;
 
         public PatchDocument(JObject patchDocument, Type targetType, JsonSerializer serializer = null)
         {
-            _patchDocument = patchDocument ?? throw new ArgumentNullException(nameof(patchDocument));
+            _patchPatch = patchDocument ?? throw new ArgumentNullException(nameof(patchDocument));
             _targetType = targetType ?? throw new ArgumentNullException(nameof(targetType));
             _serializer = serializer ?? new JsonSerializer();
             CompilePatchedProperties();
@@ -40,11 +41,10 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
 
         private void CompilePatchedProperties()
         {
-            var resolver = _serializer.ContractResolver.ResolveContract(_targetType) as JsonObjectContract;
-            if (resolver == null)
+            if (!(_serializer.ContractResolver.ResolveContract(_targetType) is JsonObjectContract resolver))
                 throw new InvalidOperationException(
                     $"Serializer could not provide ContractResolver for target type: '{_targetType.Name}'");
-            foreach (var prop in _patchDocument.Properties())
+            foreach (var prop in _patchPatch.Properties())
             {
                 var targetProp = resolver.Properties.GetClosestMatchProperty(prop.Name);
                 if (targetProp == null || targetProp.Ignored || !targetProp.Writable) continue;
@@ -59,9 +59,10 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
             }
         }
 
+        internal JObject Patch => _patchPatch;
         internal object ToObject()
         {
-            return _patchDocument.ToObject(_targetType);
+            return _patchPatch.ToObject(_targetType);
         }
     }
 }
