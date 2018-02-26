@@ -30,7 +30,7 @@ public IHttpActionResult PatchResource(string resourceId, [FromBody] JsonMergePa
 
 * [ ] Cleanup error handling.
 * [ ] Provide Nuget Package.
-* [ ] Implement Validation for the Patch Document. The modelstate should indicate any validtion problems for properties and components provided by the patch.
+* [x] Implement Validation for the Patch Document. The modelstate should indicate any validtion problems for properties and components provided by the patch.
 * [ ] Add `application/merge-patch+json` MediaType for webapi2 and dotnet core 2.0
 
 ## Alternatives
