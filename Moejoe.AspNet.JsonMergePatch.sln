@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E3F039C0-53ED-4E9C-B1D0-F0EA85D8961A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{68FA088D-7003-4106-8464-4EDD3AEBB2D9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moejoe.AspNet.JsonMergePatch", "src\Moejoe.AspNet.JsonMergePatch\Moejoe.AspNet.JsonMergePatch.csproj", "{43BC91AF-5B63-45A9-AC9B-D6C97844B8BF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moejoe.AspNet.JsonMergePatch.Tests", "test\Moejoe.AspNet.JsonMergePatch.Tests\Moejoe.AspNet.JsonMergePatch.Tests.csproj", "{20BFBC45-85E7-4071-A44C-E992D7C99F7A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{93FDED36-AF9F-44C2-82BB-3A4F5267335F}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43BC91AF-5B63-45A9-AC9B-D6C97844B8BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43BC91AF-5B63-45A9-AC9B-D6C97844B8BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43BC91AF-5B63-45A9-AC9B-D6C97844B8BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43BC91AF-5B63-45A9-AC9B-D6C97844B8BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20BFBC45-85E7-4071-A44C-E992D7C99F7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20BFBC45-85E7-4071-A44C-E992D7C99F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20BFBC45-85E7-4071-A44C-E992D7C99F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20BFBC45-85E7-4071-A44C-E992D7C99F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{43BC91AF-5B63-45A9-AC9B-D6C97844B8BF} = {E3F039C0-53ED-4E9C-B1D0-F0EA85D8961A}
+		{20BFBC45-85E7-4071-A44C-E992D7C99F7A} = {68FA088D-7003-4106-8464-4EDD3AEBB2D9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F1F2430-5018-47C6-9076-4A910BA9A49D}
+	EndGlobalSection
+EndGlobal
