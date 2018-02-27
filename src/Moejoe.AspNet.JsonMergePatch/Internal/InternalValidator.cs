@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using NJsonSchema;
 using NJsonSchema.Generation;
 using NJsonSchema.Validation;
@@ -11,6 +12,13 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
 {
     internal class InternalValidator<TResource> where TResource : class
     {
+        private readonly IContractResolver _contractResolver;
+
+        public InternalValidator(IContractResolver contractResolver)
+        {
+            _contractResolver = contractResolver;
+        }
+
         private Dictionary<string, string[]> CollectErrors(ICollection<ValidationError> result)
         {
             var errors = new Dictionary<string, string[]>();
@@ -39,6 +47,7 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
         {
             schema.ActualSchema.RequiredProperties.Clear();
             foreach (var oneOf in schema.OneOf) RemoveRequiredAttributes(oneOf);
+            foreach(var allOf in schema.AllOf) RemoveRequiredAttributes(allOf);
             foreach (var prop in schema.ActualProperties) RemoveRequiredAttributes(prop.Value);
         }
 
@@ -47,6 +56,7 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
             var task = Task.Run(async () => await JsonSchema4.FromTypeAsync<TResource>(new JsonSchemaGeneratorSettings
             {
                 DefaultReferenceTypeNullHandling = ReferenceTypeNullHandling.Null,
+                ContractResolver = _contractResolver
             }));
             var schema = task.Result;
             schema.AllowAdditionalProperties = true;

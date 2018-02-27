@@ -20,6 +20,7 @@ namespace Moejoe.AspNet.JsonMergePatch.Tests.Validation
 
     }
 
+
     public class ValidationSubClass
     {
         [JsonProperty("dateValue")]
@@ -63,6 +64,13 @@ namespace Moejoe.AspNet.JsonMergePatch.Tests.Validation
                 return hashCode;
             }
         }
+    }
+
+    public class InheritedClass : ValidationClass
+    {
+        [JsonProperty("stringProperty")]
+        [Required(AllowEmptyStrings =  false)]
+        public string StringProperty { get; set; }
     }
     public class ValidationClass : IEquatable<ValidationClass>
     {

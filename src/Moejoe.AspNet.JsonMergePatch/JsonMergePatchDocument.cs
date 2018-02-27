@@ -21,7 +21,7 @@ namespace Moejoe.AspNet.JsonMergePatch
     {
         private readonly PatchDocument _internalDocument;
 
-        private readonly InternalValidator<TResource> _internalValidator = new InternalValidator<TResource>();
+        private readonly InternalValidator<TResource> _internalValidator;
 
         /// <summary>
         /// Constructor for given json content and optional JsonSerializer Settings.
@@ -40,6 +40,7 @@ namespace Moejoe.AspNet.JsonMergePatch
 
             settings = settings ?? new JsonSerializerSettings();
             var serializer = JsonSerializer.Create(settings);
+            _internalValidator = new InternalValidator<TResource>(serializer.ContractResolver);
             // Ensure that the serializer does not ignore null values to comply with RFC 7386
             serializer.NullValueHandling = NullValueHandling.Include;
             if (!patchDocument.Trim().StartsWith("{"))
@@ -69,6 +70,7 @@ namespace Moejoe.AspNet.JsonMergePatch
             var originalNullValueHandling = serializer.NullValueHandling;
             // Ensure that the serializer does not ignore null values to comply with RFC 7386
             serializer.NullValueHandling = NullValueHandling.Include;
+            _internalValidator = new InternalValidator<TResource>(serializer.ContractResolver);
             if (reader.TokenType != JsonToken.StartObject)
             {
                 throw new InvalidJsonMergePatchDocumentException(ErrorMessages.DocumentRootMustBeObject);

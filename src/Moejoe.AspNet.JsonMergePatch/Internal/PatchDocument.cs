@@ -13,11 +13,12 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
         private readonly JsonSerializer _serializer;
         private readonly Type _targetType;
 
-        public PatchDocument(JObject patchDocument, Type targetType, JsonSerializer serializer = null)
+        public PatchDocument(JObject patchDocument, Type targetType, JsonSerializer serializer)
         {
             _patchPatch = patchDocument ?? throw new ArgumentNullException(nameof(patchDocument));
             _targetType = targetType ?? throw new ArgumentNullException(nameof(targetType));
-            _serializer = serializer ?? new JsonSerializer();
+            _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
+
             CompilePatchedProperties();
         }
 

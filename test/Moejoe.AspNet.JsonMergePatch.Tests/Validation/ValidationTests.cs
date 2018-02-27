@@ -46,6 +46,11 @@ namespace Moejoe.AspNet.JsonMergePatch.Tests.Validation
             Enumeration = "test"
         });
 
+        private static JObject InheritedClassPatchDocument => JObject.FromObject(new
+        {
+            Enumeration = "first"
+        });
+
         [Test]
         public void Empty_PatchDocument_IsValid()
         {
@@ -94,6 +99,16 @@ namespace Moejoe.AspNet.JsonMergePatch.Tests.Validation
             var validationErrors = patchDocument.Validate(validationContext).ToList();
             Console.Write(JsonConvert.SerializeObject(validationErrors));
             Assert.AreEqual(validationErrors.Count(p => p != null), 1, "One Error");
+        }
+
+        [Test]
+        public void Inherited_RequiredProperties_Are_Not_Enforced()
+        {
+            var patchDocument = new JsonMergePatchDocument<InheritedClass>(InheritedClassPatchDocument.ToString());
+            var validationContext = new ValidationContext(patchDocument);
+            var validationErrors = patchDocument.Validate(validationContext).ToList();
+            Console.Write(JsonConvert.SerializeObject(validationErrors));
+            Assert.IsTrue(validationErrors.All(p => p == null), "No Error Result");
         }
     }
 }
