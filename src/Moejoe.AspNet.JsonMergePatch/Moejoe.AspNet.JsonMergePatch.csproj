@@ -17,7 +17,7 @@
     <Description>A  Json Merge Patch (RFC 7396 ) Implementation for Asp.NET.</Description>
     <PackageTags>RFC 7396 Json Merge Patch Asp.NET mvc5 Core</PackageTags>
     <MinClientVersion>2.12</MinClientVersion>
-    <Version>0.9.1-beta</Version>
+    <Version>0.9.2-beta</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />

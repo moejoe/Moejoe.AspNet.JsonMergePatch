@@ -43,12 +43,13 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
             return errors;
         }
 
-        private static void RemoveRequiredAttributes(JsonSchema4 schema)
+        private static void AllowAdditionalPropertiesAndRemoveRequiredProperties(JsonSchema4 schema)
         {
+            schema.ActualSchema.AllowAdditionalProperties = true;
             schema.ActualSchema.RequiredProperties.Clear();
-            foreach (var oneOf in schema.OneOf) RemoveRequiredAttributes(oneOf);
-            foreach(var allOf in schema.AllOf) RemoveRequiredAttributes(allOf);
-            foreach (var prop in schema.ActualProperties) RemoveRequiredAttributes(prop.Value);
+            foreach (var oneOf in schema.OneOf) AllowAdditionalPropertiesAndRemoveRequiredProperties(oneOf);
+            foreach(var allOf in schema.AllOf) AllowAdditionalPropertiesAndRemoveRequiredProperties(allOf);
+            foreach (var prop in schema.ActualProperties) AllowAdditionalPropertiesAndRemoveRequiredProperties(prop.Value);
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext, JObject target)
@@ -59,8 +60,7 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
                 ContractResolver = _contractResolver
             }));
             var schema = task.Result;
-            schema.AllowAdditionalProperties = true;
-            RemoveRequiredAttributes(schema);
+            AllowAdditionalPropertiesAndRemoveRequiredProperties(schema);
             var result = schema.Validate(target);
             if (!result.Any()) return new[] {ValidationResult.Success};
             var errors = CollectErrors(result.ToList());
