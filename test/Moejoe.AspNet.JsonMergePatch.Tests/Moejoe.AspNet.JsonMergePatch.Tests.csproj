@@ -4,20 +4,10 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0" />
-    <PackageReference Include="NJsonSchema" Version="9.10.27" />
     <PackageReference Include="NUnit" Version="3.9.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Moejoe.AspNet.JsonMergePatch\Moejoe.AspNet.JsonMergePatch.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json.Schema">
-      <HintPath>..\..\..\..\..\..\.nuget\packages\newtonsoft.json.schema\3.0.7\lib\net45\Newtonsoft.Json.Schema.dll</HintPath>
-    </Reference>
-    <Reference Include="NJsonSchema">
-      <HintPath>..\..\..\..\..\..\.nuget\packages\njsonschema\9.10.27\lib\net45\NJsonSchema.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>
