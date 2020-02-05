@@ -1,22 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using NJsonSchema;
 using NJsonSchema.Generation;
 using NJsonSchema.Validation;
 
 namespace Moejoe.AspNet.JsonMergePatch.Internal
 {
+
     internal class InternalValidator<TResource> where TResource : class
     {
-        private readonly IContractResolver _contractResolver;
+        private readonly JsonSerializerSettings _jsonSerializerSettings;
 
-        public InternalValidator(IContractResolver contractResolver)
+        public InternalValidator(JsonSerializerSettings jsonSerializerSettings)
         {
-            _contractResolver = contractResolver;
+            _jsonSerializerSettings = jsonSerializerSettings;
         }
 
         private Dictionary<string, string[]> CollectErrors(ICollection<ValidationError> result)
@@ -43,7 +43,7 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
             return errors;
         }
 
-        private static void AllowAdditionalPropertiesAndRemoveRequiredProperties(JsonSchema4 schema)
+        private static void AllowAdditionalPropertiesAndRemoveRequiredProperties(JsonSchema schema)
         {
             schema.ActualSchema.AllowAdditionalProperties = true;
             schema.ActualSchema.RequiredProperties.Clear();
@@ -54,12 +54,11 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext, JObject target)
         {
-            var task = Task.Run(async () => await JsonSchema4.FromTypeAsync<TResource>(new JsonSchemaGeneratorSettings
+            var schema = JsonSchema.FromType<TResource>(new JsonSchemaGeneratorSettings
             {
                 DefaultReferenceTypeNullHandling = ReferenceTypeNullHandling.Null,
-                ContractResolver = _contractResolver
-            }));
-            var schema = task.Result;
+                SerializerSettings = _jsonSerializerSettings
+            });
             AllowAdditionalPropertiesAndRemoveRequiredProperties(schema);
             var result = schema.Validate(target);
             if (!result.Any()) return new[] {ValidationResult.Success};

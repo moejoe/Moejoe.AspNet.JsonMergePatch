@@ -40,7 +40,7 @@ namespace Moejoe.AspNet.JsonMergePatch
 
             settings = settings ?? new JsonSerializerSettings();
             var serializer = JsonSerializer.Create(settings);
-            _internalValidator = new InternalValidator<TResource>(serializer.ContractResolver);
+            _internalValidator = new InternalValidator<TResource>(settings);
             // Ensure that the serializer does not ignore null values to comply with RFC 7386
             serializer.NullValueHandling = NullValueHandling.Include;
             if (!patchDocument.Trim().StartsWith("{"))
@@ -60,17 +60,16 @@ namespace Moejoe.AspNet.JsonMergePatch
         /// Constructor for given json content and optional JsonSerializer Settings.
         /// </summary>
         /// <param name="reader">JsonReader.</param>
-        /// <param name="serializer">Serializer. NullValueHandling will always be NullValueHandling.Include though.</param>
+        /// <param name="settings">settings</param>
         /// <exception cref="InvalidJsonMergePatchDocumentException">
         ///     if <paramref name="reader" /> points to anything other than a
         ///     parsable json object.
         /// </exception>
-        public JsonMergePatchDocument(JsonReader reader, JsonSerializer serializer)
+        public JsonMergePatchDocument(JsonReader reader, JsonSerializerSettings settings = null)
         {
-            var originalNullValueHandling = serializer.NullValueHandling;
-            // Ensure that the serializer does not ignore null values to comply with RFC 7386
-            serializer.NullValueHandling = NullValueHandling.Include;
-            _internalValidator = new InternalValidator<TResource>(serializer.ContractResolver);
+            settings = settings ?? new JsonSerializerSettings();
+            _internalValidator = new InternalValidator<TResource>(settings);
+            var serializer = JsonSerializer.Create(settings);
             if (reader.TokenType != JsonToken.StartObject)
             {
                 throw new InvalidJsonMergePatchDocumentException(ErrorMessages.DocumentRootMustBeObject);
@@ -85,10 +84,6 @@ namespace Moejoe.AspNet.JsonMergePatch
             catch (JsonReaderException ex)
             {
                 throw new InvalidJsonMergePatchDocumentException(ErrorMessages.DocumentNotParseable, ex);
-            }
-            finally
-            {
-                serializer.NullValueHandling = originalNullValueHandling;
             }
         }
         /// <summary>
