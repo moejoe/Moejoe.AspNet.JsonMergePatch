@@ -20,6 +20,7 @@ namespace Moejoe.AspNet.JsonMergePatch
     public class JsonMergePatchDocument<TResource> : IJsonMergePatchDocument<TResource>, IValidatableObject where TResource : class
     {
         private readonly PatchDocument _internalDocument;
+        private readonly JsonSerializerSettings _serializerSettings;
 
         private readonly InternalValidator<TResource> _internalValidator;
 
@@ -38,9 +39,9 @@ namespace Moejoe.AspNet.JsonMergePatch
             if (string.IsNullOrWhiteSpace(patchDocument))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(patchDocument));
 
-            settings = settings ?? new JsonSerializerSettings();
-            var serializer = JsonSerializer.Create(settings);
-            _internalValidator = new InternalValidator<TResource>(settings);
+            _serializerSettings = settings ?? new JsonSerializerSettings();
+            var serializer = JsonSerializer.Create(_serializerSettings);
+            _internalValidator = new InternalValidator<TResource>();
             // Ensure that the serializer does not ignore null values to comply with RFC 7386
             serializer.NullValueHandling = NullValueHandling.Include;
             if (!patchDocument.Trim().StartsWith("{"))
@@ -60,16 +61,14 @@ namespace Moejoe.AspNet.JsonMergePatch
         /// Constructor for given json content and optional JsonSerializer Settings.
         /// </summary>
         /// <param name="reader">JsonReader.</param>
-        /// <param name="settings">settings</param>
+        /// <param name="serializer">settings</param>
         /// <exception cref="InvalidJsonMergePatchDocumentException">
         ///     if <paramref name="reader" /> points to anything other than a
         ///     parsable json object.
         /// </exception>
-        public JsonMergePatchDocument(JsonReader reader, JsonSerializerSettings settings = null)
+        public JsonMergePatchDocument(JsonReader reader, JsonSerializer serializer)
         {
-            settings = settings ?? new JsonSerializerSettings();
-            _internalValidator = new InternalValidator<TResource>(settings);
-            var serializer = JsonSerializer.Create(settings);
+            _internalValidator = new InternalValidator<TResource>();
             if (reader.TokenType != JsonToken.StartObject)
             {
                 throw new InvalidJsonMergePatchDocumentException(ErrorMessages.DocumentRootMustBeObject);
@@ -100,7 +99,8 @@ namespace Moejoe.AspNet.JsonMergePatch
         /// <inheritdoc />
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            return _internalValidator.Validate(validationContext, _internalDocument.Patch);
+            return _internalValidator.Validate(validationContext, _internalDocument.Patch, _serializerSettings ?? JsonConvert.DefaultSettings?.Invoke());
         }
     }
+
 }

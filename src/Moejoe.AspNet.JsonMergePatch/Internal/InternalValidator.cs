@@ -12,13 +12,7 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
 
     internal class InternalValidator<TResource> where TResource : class
     {
-        private readonly JsonSerializerSettings _jsonSerializerSettings;
-
-        public InternalValidator(JsonSerializerSettings jsonSerializerSettings)
-        {
-            _jsonSerializerSettings = jsonSerializerSettings;
-        }
-
+        
         private Dictionary<string, string[]> CollectErrors(ICollection<ValidationError> result)
         {
             var errors = new Dictionary<string, string[]>();
@@ -52,12 +46,11 @@ namespace Moejoe.AspNet.JsonMergePatch.Internal
             foreach (var prop in schema.ActualProperties) AllowAdditionalPropertiesAndRemoveRequiredProperties(prop.Value);
         }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext, JObject target)
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext, JObject target, JsonSerializerSettings settings = null)
         {
             var schema = JsonSchema.FromType<TResource>(new JsonSchemaGeneratorSettings
             {
                 DefaultReferenceTypeNullHandling = ReferenceTypeNullHandling.Null,
-                SerializerSettings = _jsonSerializerSettings
             });
             AllowAdditionalPropertiesAndRemoveRequiredProperties(schema);
             var result = schema.Validate(target);
