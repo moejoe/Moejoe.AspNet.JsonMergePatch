@@ -17,7 +17,9 @@ I compared the speed by applying the same set of changes with the native
 ~~~cs
 [HttpPatch]
 [Route("resources/{resourceId}", Name="PatchResource")]
-public IHttpActionResult PatchResource(string resourceId, [FromBody] JsonMergePatchDocument<Resource> patchDocument)
+public IHttpActionResult PatchResource(
+  string resourceId,
+  [FromBody] JsonMergePatchDocument<Resource> patchDocument)
 {
   var resource = _resourceRepository.Get(resourceId);
   if(resource is null) 
